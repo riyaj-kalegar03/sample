@@ -17,7 +17,7 @@ import ProductPage from "./components/pages/PoductPage";
 function App() {
   return (
     <>
-      <Router>
+      <Router basename="/sample">
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
