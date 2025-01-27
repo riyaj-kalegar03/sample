@@ -92,10 +92,10 @@ const Footer = () => {
           <FooterSection>
             <FooterTitle variant="h6">Quick Links</FooterTitle>
             <FooterLink href="#">Home</FooterLink>
-            <FooterLink href="/About">About Us</FooterLink>
-            <FooterLink href="/Contact">Contact Us</FooterLink>
-            <FooterLink href="/products">Services</FooterLink>
-            <FooterLink href="#">Privacy Policy</FooterLink>
+            <FooterLink href="/#/About">About Us</FooterLink>
+            <FooterLink href="/#/Contact">Contact Us</FooterLink>
+            <FooterLink href="/#/products">Services</FooterLink>
+            <FooterLink href="/sample/#">Privacy Policy</FooterLink>
           </FooterSection>
         </Grid>
 
