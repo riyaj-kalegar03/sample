@@ -44,7 +44,7 @@ const Contact = () => {
           boxShadow: 4,
           backgroundColor: "#fff",
           borderRadius: 3,
-          paddingLeft: "46px",
+
           overflow: "hidden",
         }}
       >
