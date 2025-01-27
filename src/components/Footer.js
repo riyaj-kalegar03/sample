@@ -91,11 +91,11 @@ const Footer = () => {
         <Grid item xs={12} sm={6} md={3}>
           <FooterSection>
             <FooterTitle variant="h6">Quick Links</FooterTitle>
-            <FooterLink href="#">Home</FooterLink>
-            <FooterLink href="/#/About">About Us</FooterLink>
-            <FooterLink href="/#/Contact">Contact Us</FooterLink>
-            <FooterLink href="/#/products">Services</FooterLink>
-            <FooterLink href="/sample/#">Privacy Policy</FooterLink>
+            <FooterLink href="#/Home">Home</FooterLink>
+            <FooterLink href="#/About">About Us</FooterLink>
+            <FooterLink href="#/Contact">Contact Us</FooterLink>
+            <FooterLink href="#/products">Services</FooterLink>
+            <FooterLink href="#/">Privacy Policy</FooterLink>
           </FooterSection>
         </Grid>
 
