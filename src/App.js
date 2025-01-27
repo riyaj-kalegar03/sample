@@ -14,6 +14,9 @@ import Publications from "./components/pages/Publications";
 import Campaign from "./components/pages/Campaign";
 import ProductPage from "./components/pages/PoductPage";
 
+import AboutUs from "./components/pages/AboutUs";
+import Contact from "./components/pages/Contact";
+
 function App() {
   return (
     <>
@@ -26,6 +29,8 @@ function App() {
           <Route path="/products" component={ProductPage} />
           <Route path="/ID" component={ID} />
           <Route path="/Business" component={Business} />
+          <Route path="/About" exact component={AboutUs} />
+          <Route path="/Contact" exact component={Contact} />
           <Route path="/Education" component={Education} />
           <Route path="/Promotional" component={Promotional} />
           <Route path="/Publications" component={Publications} />

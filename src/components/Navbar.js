@@ -63,7 +63,7 @@ const Navbar = () => {
               to="/about"
               sx={{ textDecoration: "none", color: "inherit" }}
             >
-              About
+              About Us
             </Typography>
             <Typography
               component={Link}
@@ -74,10 +74,10 @@ const Navbar = () => {
             </Typography>
             <Typography
               component={Link}
-              to="/contact"
+              to="/Contact"
               sx={{ textDecoration: "none", color: "inherit" }}
             >
-              Contact
+              Contact Us
             </Typography>
           </Box>
         </Toolbar>
@@ -122,7 +122,7 @@ const Navbar = () => {
               to="/about"
               onClick={toggleDrawer(false)}
             >
-              <ListItemText primary="About" />
+              <ListItemText primary="About Us" />
             </ListItem>
             <ListItem
               button
@@ -138,7 +138,7 @@ const Navbar = () => {
               to="/contact"
               onClick={toggleDrawer(false)}
             >
-              <ListItemText primary="Contact" />
+              <ListItemText primary="Contact Us" />
             </ListItem>
           </List>
         </Box>

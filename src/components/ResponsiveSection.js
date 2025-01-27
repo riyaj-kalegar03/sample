@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useHistory } from "react-router-dom"; // Import useHistory for routing
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ResponsiveSection = () => {
   const sectionRef = useRef(null); // Reference to the section
-  const nextSectionRef = useRef(null); // Reference to the below section
+  const history = useHistory(); // React Router history hook
 
   useEffect(() => {
     const element = sectionRef.current;
@@ -31,9 +32,9 @@ const ResponsiveSection = () => {
     );
   }, []);
 
-  // Scroll to the next section
-  const scrollToNextSection = () => {
-    nextSectionRef.current.scrollIntoView({ behavior: "smooth" });
+  // Navigate to the Contact page
+  const navigateToContact = () => {
+    history.push("/Contact"); // Redirect to /Contact
   };
 
   return (
@@ -83,18 +84,11 @@ const ResponsiveSection = () => {
             variant="contained"
             sx={{ marginBottom: 4 }}
             color="primary"
-            onClick={scrollToNextSection}
+            onClick={navigateToContact} // Navigate on click
           >
             Contact Us
           </Button>
         </Box>
-      </Box>
-
-      {/* Next Section */}
-      <Box
-        ref={nextSectionRef} // Attach ref to the next section
-      >
-        <Typography></Typography>
       </Box>
     </>
   );
