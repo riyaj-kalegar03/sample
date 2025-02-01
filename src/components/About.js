@@ -1,49 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Grid, Typography, Box } from "@mui/material";
-import aboutUsImage from "./About us.webp"; // First image
-import secondImage from "./flex print.jpeg"; // Second image
-import thirdImage from "./digital printing.avif"; // Third image
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion } from "framer-motion";
+import { useHistory } from "react-router-dom";
+import aboutUsImage from "./About us.webp";
+import secondImage from "./flex print.jpeg";
+import thirdImage from "./digital printing.avif";
 
 const About = () => {
-  useEffect(() => {
-    gsap.fromTo(
-      ".about-text",
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: ".about-text",
-          start: "top 80%",
-          end: "top 30%",
-          scrub: 0.5,
-        },
-      }
-    );
+  const history = useHistory();
 
-    gsap.fromTo(
-      ".about-images",
-      { y: 100, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: ".about-images",
-          start: "top 80%",
-          end: "top 30%",
-          scrub: 0.5,
-        },
-      }
-    );
-  }, []);
+  const navigateToAbout = () => {
+    history.push("/About");
+  };
 
   return (
     <Container>
@@ -54,60 +22,75 @@ const About = () => {
         justifyContent="center"
         sx={{ minHeight: "100vh" }}
       >
-        {/* About Us Text */}
+        {/* Left Side - Text */}
         <Grid item xs={12} sm={6}>
-          <Box
-            className="about-text"
-            p={{ xs: 3, sm: 4, md: 6 }}
-            textAlign="center"
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: false, amount: 0.3 }}
           >
-            <Typography
-              variant="h5"
-              sx={{ color: "#0077b6", fontFamily: "Macondo" }}
-              gutterBottom
-            >
-              About Us
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{
-                color: "black",
-                fontSize: {
-                  xs: "1.5rem",
-                  sm: "3rem",
-                  md: "2.5rem",
-                },
-              }}
-              gutterBottom
-            >
-              Printing Solutions Tailored to Your Company
-            </Typography>
-            <Typography variant="body1" paragraph>
-              We are a leading printing press company committed to delivering
-              high-quality print solutions to our clients. Our team of skilled
-              professionals ensures precision, innovation, and customer
-              satisfaction at every stage of the printing process.
-            </Typography>
-          </Box>
+            <Box p={{ xs: 3, sm: 4, md: 6 }} textAlign="center">
+              <Typography
+                variant="h5"
+                sx={{ color: "#0077b6", fontFamily: "Macondo" }}
+                gutterBottom
+              >
+                About Us
+              </Typography>
+              <Typography
+                variant="h3"
+                sx={{
+                  color: "black",
+                  fontSize: { xs: "1.5rem", sm: "3rem", md: "2.5rem" },
+                }}
+                gutterBottom
+              >
+                Printing Solutions Tailored to Your Company
+              </Typography>
+              <Typography variant="body1" paragraph>
+                We are a leading printing press company committed to delivering
+                high-quality print solutions to our clients. Our team of skilled
+                professionals ensures precision, innovation, and customer
+                satisfaction at every stage of the printing process.
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#0077b6",
+                  cursor: "pointer",
+                  display: "inline",
+                  textDecoration: "none",
+                }}
+                onClick={navigateToAbout}
+              >
+                Learn More →
+              </Typography>
+            </Box>
+          </motion.div>
         </Grid>
 
-        {/* Three Images */}
+        {/* Right Side - Images */}
         <Grid item xs={12} sm={6}>
           <Box
-            className="about-images"
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            flexWrap="wrap" // Ensures proper layout on smaller screens
+            flexWrap="wrap"
             sx={{
               borderRadius: "10px",
               overflow: "hidden",
               gap: 2,
             }}
           >
-            {/* First Image (Larger) */}
-            <Box
-              sx={{
+            {/* First (Larger) Image */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: false, amount: 0.3 }}
+              style={{
                 flex: "1 1 100%",
                 display: "flex",
                 justifyContent: "center",
@@ -125,11 +108,16 @@ const About = () => {
                   borderRadius: "10px",
                 }}
               />
-            </Box>
-            {/* Second Image (Smaller) */}
-            <Box
-              sx={{
-                flex: "1 1 calc(50% - 10px)", // Takes half of the row
+            </motion.div>
+
+            {/* Second (Smaller) Image */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: false, amount: 0.3 }}
+              style={{
+                flex: "1 1 calc(50% - 10px)",
                 display: "flex",
                 justifyContent: "center",
               }}
@@ -145,11 +133,16 @@ const About = () => {
                   borderRadius: "10px",
                 }}
               />
-            </Box>
-            {/* Third Image (Smaller) */}
-            <Box
-              sx={{
-                flex: "1 1 calc(50% - 10px)", // Takes half of the row
+            </motion.div>
+
+            {/* Third (Smaller) Image */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: false, amount: 0.3 }}
+              style={{
+                flex: "1 1 calc(50% - 10px)",
                 display: "flex",
                 justifyContent: "center",
               }}
@@ -165,7 +158,7 @@ const About = () => {
                   borderRadius: "10px",
                 }}
               />
-            </Box>
+            </motion.div>
           </Box>
         </Grid>
       </Grid>

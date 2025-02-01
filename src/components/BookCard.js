@@ -1,65 +1,74 @@
 import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material";
 
-const BookCard = ({ image, title, description }) => {
+const BookCard = ({ image, title, description, price }) => {
   return (
-    <Paper
+    <Card
       sx={{
+        width: { xs: 170, md: 180 }, // Fixed width
+        height: 300, // Fixed height
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        width: 180, // Set a smaller width
-        padding: 1.5, // Less padding for a compact look
-        boxShadow: "none", // Remove box shadow for a flat look
-        borderRadius: 1, // Rounded corners
-        transition: "all 0.3s",
-        "&:hover": {
-          transform: "scale(1.05)", // Slight zoom on hover for interaction
-        },
-        // Adjust padding for small screens
-        "@media (max-width: 600px)": {
-          paddingLeft: 0, // Remove left padding for small screens
-        },
+        textAlign: "center",
+        padding: 1.5,
       }}
     >
-      {/* Book Image */}
+      {/* Image Container */}
       <Box
-        component="img"
-        src={image}
-        alt={title}
         sx={{
           width: "100%",
-          height: 120, // Smaller image height
-          objectFit: "cover",
-          borderRadius: 1,
+          height: 100,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "hidden",
         }}
-      />
-      <Box sx={{ paddingTop: 1 }}>
-        {/* Book Title */}
-        <Typography
-          variant="h6"
+      >
+        <CardMedia
+          component="img"
+          image={image}
+          alt={title}
           sx={{
-            fontWeight: "bold",
-            color: "primary.main",
-            textAlign: "center",
-            fontSize: "1rem", // Smaller font size for the title
+            maxHeight: "100%",
+            maxWidth: "100%",
+            objectFit: "contain",
           }}
-        >
+        />
+      </Box>
+
+      {/* Content Section */}
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: "700" }}>
           {title}
         </Typography>
-        {/* Book Description */}
-        <Typography
-          variant="body2"
+
+        {/* Scrollable Description (Hides Scrollbar) */}
+        <Box
           sx={{
-            color: "text.secondary",
+            maxHeight: 50, // Fixed height for text
+            // Enable scrolling
             textAlign: "center",
-            fontSize: "0.875rem", // Smaller font size for description
+            paddingX: 1,
+            fontSize: "0.85rem",
+            fontWeight: "none",
+            fontFamily: "Arial, sans-serif",
           }}
         >
           {description}
+        </Box>
+
+        <Typography variant="body1" color="primary">
+          Rs. {price}
         </Typography>
-      </Box>
-    </Paper>
+      </CardContent>
+    </Card>
   );
 };
 

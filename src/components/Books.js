@@ -1,205 +1,150 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Box, Typography, Button } from "@mui/material";
 import BookCard from "./BookCard";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import book1 from "./book1.webp"; // Replace with actual images
-import book2 from "./book b4.jpg";
-import book3 from "./book b1.jpeg";
-import book4 from "./book b2.jpeg";
-import book5 from "./book b3.jpeg";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useHistory, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Books = () => {
-  const books = [
-    {
-      image: book1,
-      title: "Book Title 1",
-      description: "This is a short description of Book 1.",
-    },
-    {
-      image: book2,
-      title: "Book Title 2",
-      description: "This is a short description of Book 2.",
-    },
-    {
-      image: book3,
-      title: "Book Title 3",
-      description: "This is a short description of Book 3.",
-    },
-    {
-      image: book4,
-      title: "Book Title 4",
-      description: "This is a short description of Book 4.",
-    },
-    {
-      image: book5,
-      title: "Book Title 5",
-      description: "This is a short description of Book 3.",
-    },
-    {
-      image: book4,
-      title: "Book Title 6",
-      description: "This is a short description of Book 4.",
-    },
-  ];
-
-  const cardsRef = useRef([]);
-  const headlineRef = useRef(null);
-  const sublineRef = useRef(null);
-  const buttonRef = useRef(null); // Reference for the "Explore More" button
+  const [books, setBooks] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
-    // GSAP animation for each book card
-    cardsRef.current.forEach((card, index) => {
-      gsap.fromTo(
-        card,
-        { opacity: 0, y: 50 }, // Initial state
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 90%", // Trigger when the card is near the viewport
-            end: "top 50%", // Animation runs until the card reaches this point
-            toggleActions: "play none none reverse", // Reverse animation on scroll back
-          },
-        }
-      );
-    });
-
-    // GSAP animation for the headline (bottom to top)
-    gsap.fromTo(
-      headlineRef.current,
-      { opacity: 0, y: 50 }, // Start below the visible area
-      {
-        opacity: 1,
-        y: 0, // End at the normal position
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: headlineRef.current,
-          start: "top 80%", // Trigger when the headline is near the viewport
-          end: "top 50%", // Animation runs until the headline reaches this point
-          toggleActions: "play none none reverse", // Reverse animation on scroll back
-        },
-      }
-    );
-
-    // GSAP animation for the subline (bottom to top)
-    gsap.fromTo(
-      sublineRef.current,
-      { opacity: 0, y: 50 }, // Start below the visible area
-      {
-        opacity: 1,
-        y: 0, // End at the normal position
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sublineRef.current,
-          start: "top 85%", // Trigger when the subline is near the viewport
-          end: "top 60%", // Animation runs until the subline reaches this point
-          toggleActions: "play none none reverse", // Reverse animation on scroll back
-        },
-      }
-    );
-
-    // GSAP animation for the "Explore More" button
-    gsap.fromTo(
-      buttonRef.current,
-      { opacity: 0, y: 50 }, // Start below the visible area
-      {
-        opacity: 1,
-        y: 0, // End at the normal position
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: buttonRef.current,
-          start: "top 90%", // Trigger when the button is near the viewport
-          end: "top 70%", // Animation runs until the button reaches this point
-          toggleActions: "play none none reverse", // Reverse animation on scroll back
-        },
-      }
-    );
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); // Clean up all ScrollTriggers
-    };
+    fetch("http://localhost:4000/book/")
+      .then((response) => response.json())
+      .then((data) => {
+        setBooks(data.slice(0, 6));
+      })
+      .catch((error) => console.error("Error fetching books:", error));
   }, []);
+
+  const handleExploreMore = () => {
+    history.push("/AllBooks");
+  };
 
   return (
     <Box
       sx={{
-        padding: { xs: 2, sm: 4 }, // 2 units of padding for small screens, 4 for larger screens
+        padding: { xs: 2, sm: 4 },
         backgroundColor: "#f9f9f9",
-        overflowX: "auto",
-        position: "relative", // To prevent any overflow issues
-        zIndex: 1, // Ensure the section content doesn't overlap with other sections
+        position: "relative",
+
+        zIndex: 1,
+        fontFamily: "Roboto, sans-serif",
       }}
     >
-      <Typography
-        variant="h4"
-        align="center"
-        sx={{
-          color: "primary.main",
-          marginBottom: 2,
-          fontFamily: "Macondo",
-        }}
-        ref={headlineRef} // Add the ref to the headline
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, type: "spring" }}
       >
-        Featured Books
-      </Typography>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{
+            color: "#0077b6",
+            fontFamily: "Macondo",
+            marginBottom: 3,
+          }}
+        >
+          Featured Books
+        </Typography>
+      </motion.div>
 
-      <Typography
-        variant="body1"
-        align="center"
-        sx={{ marginBottom: 4, color: "#555" }}
-        ref={sublineRef} // Add the ref to the subline
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, type: "spring" }}
       >
-        Discover a selection of captivating books that will inspire and engage.
-        Find your next favorite read here!
-      </Typography>
+        <Typography
+          variant="body1"
+          align="center"
+          sx={{
+            marginBottom: 5,
+            color: "#555",
+            fontSize: "1.2rem",
+            lineHeight: "1.6",
+            fontWeight: "300",
+          }}
+        >
+          Discover a selection of captivating books that will inspire and
+          engage. Find your next favorite read here!
+        </Typography>
+      </motion.div>
 
-      <Grid
-        container
-        spacing={3}
+      <Box
         sx={{
-          flexDirection: "row",
-          justifyContent: "flex-start",
-          overflow: "hidden", // To prevent unwanted scroll behavior inside the grid
+          display: "flex",
+          overflowX: { xs: "auto" },
+          flexWrap: { xs: "nowrap", md: "nowrap" },
+          justifyContent: { xs: "flex-start", md: "center" },
+          alignItems: { md: "center" },
+          scrollSnapType: { xs: "x mandatory", md: "none" },
+          gap: 1,
+
+          paddingBottom: { xs: 2, md: 0 },
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
         {books.map((book, index) => (
-          <Grid
-            item
-            xs={6} // 2 cards per row on small screens (mobile)
-            sm={4} // 3 cards per row on medium screens (tablet)
-            md={2} // 4 cards per row on large screens (laptop)
+          <motion.div
             key={index}
-            ref={(el) => (cardsRef.current[index] = el)} // Attach refs to each card
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1, type: "spring" }}
           >
-            <BookCard
-              image={book.image}
-              title={book.title}
-              description={book.description}
-            />
-          </Grid>
+            <Box
+              sx={{
+                flex: "0 0 auto",
+                scrollSnapAlign: "center",
+                width: { xs: "80%", sm: "60%", md: "30%" },
+                maxWidth: "200px",
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <Link to={`/Book/${book._id}`} style={{ textDecoration: "none" }}>
+                <BookCard
+                  image={book.image}
+                  title={book.title}
+                  description={
+                    book.description.split(" ").slice(0, 4).join(" ") +
+                    (book.description.split(" ").length > 4 ? "..." : "")
+                  }
+                  price={book.price}
+                />
+              </Link>
+            </Box>
+          </motion.div>
         ))}
-      </Grid>
+      </Box>
 
-      <Box textAlign="center" marginTop={4}>
-        {/* Adjust margin here */}
-        <Button
-          variant="contained"
-          sx={{ marginBottom: 4 }}
-          color="primary"
-          onClick={() => alert("No more books available!")}
+      <Box textAlign="center" marginTop={5}>
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, type: "spring" }}
         >
-          Explore More
-        </Button>
+          <Button
+            variant="contained"
+            sx={{
+              marginBottom: 4,
+              backgroundColor: "#0077b6",
+              "&:hover": {
+                backgroundColor: "#0077b6",
+              },
+              borderRadius: "5px",
+              padding: "10px 30px",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
+            }}
+            onClick={handleExploreMore}
+          >
+            Explore More
+          </Button>
+        </motion.div>
       </Box>
     </Box>
   );

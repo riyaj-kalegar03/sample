@@ -91,7 +91,7 @@ const Footer = () => {
         <Grid item xs={12} sm={6} md={3}>
           <FooterSection>
             <FooterTitle variant="h6">Quick Links</FooterTitle>
-            <FooterLink href="#/Home">Home</FooterLink>
+            <FooterLink href="#/">Home</FooterLink>
             <FooterLink href="#/About">About Us</FooterLink>
             <FooterLink href="#/Contact">Contact Us</FooterLink>
             <FooterLink href="#/products">Services</FooterLink>
@@ -134,6 +134,17 @@ const Footer = () => {
                 <Instagram />
               </IconButton>
             </FooterSocialIcons>
+          </FooterSection>
+        </Grid>
+      </Grid>
+
+      {/* Admin Section Added Below the Follow Us Section */}
+      <Grid container spacing={5}>
+        <Grid item xs={12} sm={6} md={3}>
+          <FooterSection>
+            <FooterTitle variant="h6">Admin</FooterTitle>
+            <FooterLink href="#/Login">Admin Login</FooterLink>{" "}
+            {/* Admin Login Link */}
           </FooterSection>
         </Grid>
       </Grid>

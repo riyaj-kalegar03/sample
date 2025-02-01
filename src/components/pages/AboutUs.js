@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Box,
   Grid,
@@ -8,36 +8,14 @@ import {
   CardContent,
   CardMedia,
 } from "@mui/material";
-import { gsap } from "gsap";
 import teamworkImage from "../About us.webp";
 import innovationImage from "../flex print.jpeg";
 import growthImage from "../digital printing.avif";
 
 const AboutUs = () => {
-  useEffect(() => {
-    const elements = document.querySelectorAll(".animate");
-    elements.forEach((el) => {
-      gsap.fromTo(
-        el,
-        { y: 100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          scrollTrigger: {
-            trigger: el,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    });
-  }, []);
-
   return (
     <Container maxWidth="lg" sx={{ py: 5 }}>
-      <Box textAlign="center" mb={4} className="animate">
+      <Box textAlign="center" mb={4}>
         <Typography
           variant="h4"
           gutterBottom
@@ -53,7 +31,7 @@ const AboutUs = () => {
 
       <Grid container spacing={4} alignItems="center">
         {/* Text Section */}
-        <Grid item xs={12} md={6} className="animate">
+        <Grid item xs={12} md={6}>
           <Card elevation={3} sx={{ p: 3 }}>
             <CardContent>
               <Typography
@@ -87,7 +65,7 @@ const AboutUs = () => {
         </Grid>
 
         {/* Image Section */}
-        <Grid item xs={12} md={6} className="animate">
+        <Grid item xs={12} md={6}>
           <Box
             display="grid"
             gridTemplateColumns={{ xs: "1fr", sm: "2fr 1fr" }}

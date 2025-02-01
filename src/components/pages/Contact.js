@@ -29,7 +29,7 @@ const Contact = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#e3f2fd",
+        backgroundColor: "white",
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",

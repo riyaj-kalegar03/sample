@@ -1,189 +1,158 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Button, Grid } from "@mui/material";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useHistory } from "react-router-dom";
+import { motion } from "framer-motion"; // Import Framer Motion
 
-gsap.registerPlugin(ScrollTrigger);
+// Motion Variants for Blog
+const fadeInUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+};
+
+const springEffect = {
+  hidden: { scale: 0.8, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 120 },
+  },
+};
 
 export default function Blog() {
-  const blogData = [
-    {
-      title: "New Digital Printing Service Now Available!",
-      text: "We are excited to announce the launch of our new digital printing service. This cutting-edge technology allows for quicker, more efficient print jobs with high-quality results. Whether you're looking to print brochures, flyers, or business cards, our digital printing service offers fast turnaround times and exceptional color accuracy.",
-      author: "John Doe, Marketing Manager",
-      tag: "service",
-    },
-    {
-      title: "Exclusive Offer on Bulk Printing Orders!",
-      text: "For a limited time, we are offering a special discount on bulk printing orders. Get up to 30% off when you order large quantities of brochures, business cards, or other printed materials. Contact us today to get your personalized quote and take advantage of this exclusive offer.",
-      author: "Jane Smith, Sales Executive",
-      tag: "offer",
-    },
-    {
-      title: "Sustainability in Our Printing Process",
-      text: "At [Printing Press Name], we are committed to sustainability. Our new eco-friendly printing methods use recycled paper and environmentally safe inks. By choosing our sustainable printing solutions, you help reduce environmental impact while getting the same high-quality results.",
-      author: "Mark Williams, Operations Director",
-      tag: "sustainability",
-    },
-    {
-      title: "We're Expanding Our Services: Custom Packaging Now Available!",
-      text: "We are pleased to introduce custom packaging services to our offerings. Whether you're a small business or a large corporation, we can help you design and print unique packaging solutions tailored to your products. Contact our team to learn more about our packaging options and get a free design consultation.",
-      author: "Sarah Johnson, Creative Director",
-      tag: "service",
-    },
-    {
-      title: "Holiday Special: Free Shipping on All Print Orders!",
-      text: "To celebrate the holiday season, we are offering free shipping on all print orders made before December 31st. Don't miss out on this limited-time offer to save on shipping costs while getting top-quality printed materials for your business or personal needs.",
-      author: "Emily Clark, Customer Service Manager",
-      tag: "offer",
-    },
-    {
-      title: "Meet Our New Printing Press Machine!",
-      text: "We’ve just upgraded our equipment with the latest printing press machine, allowing us to offer even higher-quality prints with faster turnaround times. Our state-of-the-art machinery can handle even the most complex print jobs with precision and efficiency. Come in and see the difference in quality!",
-      author: "Chris Davis, Production Manager",
-      tag: "news",
-    },
-  ];
+  const [blogData, setBlogData] = useState([]);
+  const history = useHistory();
+  const handleNavigate = () => {
+    // Programmatically navigate to a new route
+    history.push("/AllNews"); // This will navigate to '/AllNews'
+  };
 
   useEffect(() => {
-    // Animation for "Our Latest News" (bottom to top)
-    gsap.fromTo(
-      ".headline",
-      { y: 50, opacity: 0 }, // Start below the visible area
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: ".headline",
-          start: "top 80%",
-          end: "top 60%",
-          scrub: true,
-        },
+    // Fetch blog data from the backend
+    const fetchBlogData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/news"); // API endpoint
+        const data = await response.json();
+        setBlogData(data);
+      } catch (error) {
+        console.error("Failed to fetch blog data:", error);
       }
-    );
-
-    // Animation for "Explore our latest services..." paragraph (bottom to top)
-    gsap.fromTo(
-      ".paragraph",
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: ".paragraph",
-          start: "top 80%",
-          end: "top 60%",
-          scrub: true,
-        },
-      }
-    );
-
-    // Animation for each blog item (bottom to top)
-    gsap.utils.toArray(".blog-item").forEach((item) => {
-      gsap.fromTo(
-        item,
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.5,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 80%",
-            end: "top 60%",
-            scrub: true,
-          },
-        }
-      );
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
+
+    fetchBlogData();
   }, []);
+
+  // Function to format the date to show only the date part
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(); // This will return the date in "MM/DD/YYYY" format
+  };
 
   return (
     <Box id="blog" sx={{ width: "100%", pt: 2, px: 4 }}>
       <Box sx={{ backgroundColor: "#fff", py: 5 }}>
         <Box className="container">
           <Box sx={{ mb: 4, textAlign: "center" }}>
-            {/* Headline */}
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              sx={{ color: "#0077b6", fontFamily: "Macondo" }}
-              className="headline"
+            {/* Apply Framer Motion for zoom-out spring animation */}
+            <motion.div
+              variants={springEffect}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false }}
             >
-              Our Latest News
-            </Typography>
-            {/* Paragraph */}
-            <Typography
-              variant="body1"
-              className="paragraph"
-              sx={{ marginTop: 2 }}
+              {/* Headline */}
+              <Typography
+                variant="h4"
+                sx={{ color: "#0077b6", fontFamily: "Macondo" }}
+              >
+                Our Latest News
+              </Typography>
+            </motion.div>
+            {/* Apply Framer Motion for fade-in-up animation on paragraph */}
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false }}
             >
-              Stay updated with the latest news, offers, and updates from our
-              printing press company.
-              <br />
-              Explore our latest services, discounts, and product launches.
-            </Typography>
+              <Typography variant="body1" sx={{ marginTop: 2 }}>
+                Stay updated with the latest news, offers, and updates from our
+                printing press company.
+                <br />
+                Explore our latest services, discounts, and product launches.
+              </Typography>
+            </motion.div>
           </Box>
           <Grid container spacing={3} justifyContent="center">
-            {blogData.map((blog, index) => (
-              <Grid item xs={12} sm={4} key={index}>
-                <Box
-                  className="blog-item"
-                  sx={{
-                    backgroundColor: "#fff",
-                    borderRadius: 2,
-                    boxShadow: 3,
-                    padding: 2,
-                    textAlign: "left",
-                    height: "100%",
-                    position: "relative",
-                    overflow: "hidden",
-                    transition: "background-color 0.3s ease", // Smooth background color transition
-                    "&:hover": {
-                      backgroundColor: "lightblue", // Change background color on hover
-                    },
-                  }}
+            {blogData.slice(0, 6).map((blog, index) => (
+              <Grid item xs={12} sm={4} key={index} sx={{ display: "flex" }}>
+                {/* Apply Framer Motion for bottom-to-top animation on blog item */}
+                <motion.div
+                  variants={fadeInUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false }}
+                  style={{ width: "100%" }}
                 >
-                  <Typography variant="h6" fontWeight="bold" color="#0077b6">
-                    {blog.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ py: 1 }}>
-                    {blog.text}
-                  </Typography>
-                  <Typography variant="body2" fontWeight="bold">
-                    {blog.author}
-                  </Typography>
-                  <Box sx={{ mt: 2 }}>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        backgroundColor: "#0077b6",
-                        display: "inline-block",
-                        padding: "4px 8px",
-                        borderRadius: 1,
-                        color: "#fff",
-                      }}
-                    >
-                      {blog.tag}
+                  <Box
+                    sx={{
+                      backgroundColor: "#fff",
+                      borderRadius: 2,
+                      boxShadow: 3,
+                      padding: 2,
+                      textAlign: "left",
+                      height: "100%",
+                      position: "relative",
+                      overflow: "hidden",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      transition: "background-color 0.3s ease", // Smooth background color transition
+                      "&:hover": {
+                        backgroundColor: "lightblue", // Change background color on hover
+                      },
+                    }}
+                  >
+                    <Typography variant="h6" fontWeight="bold" color="#0077b6">
+                      {blog.headline}
                     </Typography>
+                    <Typography variant="body2" sx={{ py: 1, flexGrow: 1 }}>
+                      {blog.content}
+                    </Typography>
+                    <Typography variant="body2" fontWeight="bold">
+                      {blog.author}
+                    </Typography>
+                    <Box sx={{ mt: 2 }}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          backgroundColor: "#0077b6",
+                          display: "inline-block",
+                          padding: "4px 8px",
+                          borderRadius: 1,
+                          color: "#fff",
+                        }}
+                      >
+                        {formatDate(blog.createdAt)}{" "}
+                        {/* Display the creation date */}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
+                </motion.div>
               </Grid>
             ))}
           </Grid>
           <Box sx={{ textAlign: "center", my: 4 }}>
-            <Button variant="contained" onClick={() => alert("No more news!")}>
-              Load More
-            </Button>
+            {/* Apply Framer Motion for fade-in-up animation on the button */}
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false }}
+            >
+              <Button variant="contained" onClick={handleNavigate}>
+                Load More
+              </Button>
+            </motion.div>
           </Box>
         </Box>
       </Box>

@@ -1,100 +1,46 @@
-import React, { useEffect } from "react";
-import { Grid, Typography, Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { motion } from "framer-motion";
 import ProductCard from "../ProductCard";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-
-// Import images
-import B1 from "../Broacher.jpeg";
-import B2 from "../catelog.jpg";
-import B3 from "../digital printing.avif";
-import B4 from "../flex print.jpeg";
-import B5 from "../envlope.jpeg";
-import B6 from "../letter head.jpeg";
-import B7 from "../offset.png";
-import B8 from "../pamplates.jpeg";
-import B9 from "../screen print.jpeg";
-import B10 from "../visiting card.jpeg";
-import B11 from "../voacher.jpeg";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const productData = [
-  {
-    image: B1,
-    title: "Printing Service for Brochure",
-    description: "High-quality printing for brochures",
-  },
-  {
-    image: B2,
-    title: "Catalogues",
-    description: "Custom catalogues for your business",
-  },
-  {
-    image: B3,
-    title: "Digital Printing",
-    description: "Fast and efficient digital printing",
-  },
-  {
-    image: B4,
-    title: "Flex Printing",
-    description: "Durable and vibrant flex printing",
-  },
-  {
-    image: B5,
-    title: "Envelope Printers",
-    description: "Personalized envelope printing services",
-  },
-  {
-    image: B6,
-    title: "Letter Head Printers",
-    description: "High-quality letterhead printing",
-  },
-  {
-    image: B7,
-    title: "Offset Printings",
-    description: "Precision in offset printing",
-  },
-  {
-    image: B8,
-    title: "Pamphlets",
-    description: "Custom pamphlets for your needs",
-  },
-  {
-    image: B9,
-    title: "Screen Printings",
-    description: "Excellent screen printing services",
-  },
-  {
-    image: B10,
-    title: "Visiting Card Printers",
-    description: "Unique visiting card printing",
-  },
-  {
-    image: B11,
-    title: "Voucher Printers",
-    description: "Custom vouchers for promotions",
-  },
-];
 
 const ProductPage = () => {
+  const [productData, setProductData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    gsap.fromTo(
-      ".product-card",
-      { opacity: 0, y: 100 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".product-cards",
-          start: "top 80%",
-          toggleActions: "play none none reset", // Ensures it plays when entering and resets when leaving
-        },
-      }
-    );
+    // Fetch data from the backend
+    fetch("http://localhost:4000/service/")
+      .then((response) => response.json())
+      .then((data) => {
+        setProductData(data); // Set the fetched data to the state
+        setLoading(false); // Set loading to false when data is loaded
+      })
+      .catch((err) => {
+        setError("Failed to fetch product data");
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return (
+      <Box
+        sx={{ display: "flex", justifyContent: "center", marginTop: "3rem" }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ padding: "2rem", textAlign: "center" }}>
+        <Typography variant="h5" color="error">
+          {error}
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ padding: "2rem" }}>
@@ -102,36 +48,27 @@ const ProductPage = () => {
       <Typography
         variant="h4"
         align="center"
-        sx={{ marginBottom: "2rem", fontWeight: "bold", fontFamily: "Macondo" }}
+        sx={{ marginBottom: "2rem", color: "#0077b6", fontFamily: "Macondo" }}
       >
         Explore Our Printing Services
       </Typography>
 
       {/* Product Cards */}
-      <Grid
-        container
-        spacing={4}
-        className="product-cards"
-        justifyContent="center"
-      >
+      <Grid container spacing={4} justifyContent="center">
         {productData.map((product, index) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4} // Display 3 cards per row on medium screens and above
-            key={index}
-            className="product-card"
-          >
-            <ProductCard
-              image={product.image}
-              title={product.title}
-              description={product.description}
-              sx={{
-                width: 300, // Fixed width
-                height: 400, // Fixed height
-              }}
-            />
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1, type: "spring" }}
+            >
+              <ProductCard
+                image={product.image}
+                title={product.title}
+                description={product.description}
+                sx={{ width: 300, height: 400 }}
+              />
+            </motion.div>
           </Grid>
         ))}
       </Grid>
